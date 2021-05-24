@@ -18,19 +18,47 @@
  *   - in_active_trail: TRUE if the link is in the active trail.
  */
 #}
+
 {% import _self as menus %}
 
 {#
   We call a macro which calls itself to render the full tree.
   @see https://twig.symfony.com/doc/1.x/tags/macro.html
 #}
-{{ menus.menu_links(items, attributes, 0) }}
+{{ menus.menu_links(items, attributes, 0, mobileMenu) }}
 
-{% macro menu_links(items, attributes, menu_level) %}
+{% macro menu_links(items, attributes, menu_level, mobileMenu) %}
+  {{ attach_library('medvind/alpine') }}
+  {% set classes = [
+    mobileMenu ? 'gov-absolute gov-w-80 gov-transform gov-right-0 z-50 gov-bg-primary-dark gov-transition-transform gov-h-full' : 'gov-absolute gov-w-80 gov-transform gov-right-0 z-50 gov-bg-primary-dark gov-transition-transform gov-h-full md:gov-relative md:gov-w-auto md:gov-right-auto md:gov-flex'
+  ] %}
+  {% set buttonClasses = [
+    mobileMenu ? 'gov-block' : 'gov-block md:gov-hidden'
+  ] %}
+  {% set linkClasses = [
+    'hover:gov-text-tertiary-dark',
+    'gov-text-primary-light'
+  ] %}
   {% import _self as menus %}
   {% if items %}
+    {# {% if mobileMenu %} #}
+      <div {{attributes.addClass(buttonClasses)}}>
+        <button class="gov-text-gray-500 gov-w-10 gov-h-10 gov-relative focus:gov-outline-none gov-bg-white gov-transform" :class="{'gov--translate-x-80': open, 'gov-translate-x-0': !open}" @click="open = !open">
+          <span class="gov-sr-only">Open main menu</span>
+          <div class="gov-block gov-w-5 gov-absolute gov-left-1/2 gov-top-1/2 gov-transform gov--translate-x-1/2 gov--translate-y-1/2">
+            <span aria-hidden="true" class="gov-block gov-absolute gov-h-0.5 gov-w-5 gov-bg-current gov-transform gov-transition gov-duration-500 gov-ease-in-out" :class="{'gov-rotate-45': open,' gov--translate-y-1.5': !open }"></span>
+            <span aria-hidden="true" class="gov-block gov-absolute gov-h-0.5 gov-w-5 gov-bg-current gov-transform gov-transition gov-duration-500 gov-ease-in-out" :class="{'gov-opacity-0': open } "></span>
+            <span aria-hidden="true" class="gov-block gov-absolute gov-h-0.5 gov-w-5 gov-bg-current gov-transform gov-transition gov-duration-500 gov-ease-in-out" :class="{'gov--rotate-45': open, ' gov-translate-y-1.5': !open}"></span>
+          </div>
+        </button>
+      </div>
+    {# {% endif %} #}
     {% if menu_level == 0 %}
-      <ul{{ attributes.addClass('md:gov-flex') }}>
+      {% if mobileMenu %}
+        <ul{{ attributes.addClass(classes).removeClass(buttonClasses)}} :class="{'gov-translate-x-0': open, 'gov-translate-x-full': !open}">
+      {% else %}
+        <ul{{ attributes.addClass(classes).removeClass(buttonClasses)}} :class="{'gov-translate-x-0': open, 'gov-translate-x-full md:gov-translate-x-0': !open}">
+      {% endif %}
     {% else %}
       <ul>
     {% endif %}
@@ -42,7 +70,7 @@
       {% else %}
         <li{{ item.attributes.addClass('gov-px-4') }}>
       {% endif %}
-        {{ link(item.title, item.url) }}
+        {{ link(item.title, item.url, {'class': linkClasses}) }}
         {% if item.below %}
           {{ menus.menu_links(item.below, attributes, menu_level + 1) }}
         {% endif %}

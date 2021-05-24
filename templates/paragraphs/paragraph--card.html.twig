@@ -1,0 +1,114 @@
+{%
+  set classes = [
+    'paragraph',
+    'paragraph--type--' ~ paragraph.bundle|clean_class,
+    view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
+    not paragraph.isPublished() ? 'paragraph--unpublished',
+  ]
+%}
+
+{% set title = paragraph.field_title.0.value %}
+{% set body = paragraph.field_body.0.value %}
+{% set image = file_url(paragraph.field_media.entity.field_media_image.entity.fileuri) %}
+{% set link_title = paragraph.field_cta.0.title %}
+{% set link_uri = paragraph.field_cta.0.uri %}
+{% set style = paragraph.field_variant.0.value %}
+
+{% if style == 'style1' %}
+  {%
+    set card_classes =[
+      'gov-max-w-3xl',
+      'gov-w-full',
+      'lg:gov-flex',
+      'gov-overflow-hidden',
+      'gov-mx-auto'
+    ]
+  %}
+  {%
+    set text_classes =[
+      'gov-bg-white',
+      'gov-py-4',
+      'gov-px-6',
+      'gov-leading-normal',
+      'gov-flex',
+      'gov-flex-wrap',
+      'gov-rounded',
+      'gov-border-r',
+      'gov-border-b',
+      'gov-border-l',
+      'gov-border-grey-light',
+      'lg:gov-border-l-0',
+      'lg:gov-border-t',
+      'lg:gov-border-grey-light'
+    ]
+  %}
+  {%
+    set image_classes =[
+      'gov-h-48',
+      'lg:gov-h-auto',
+      'lg:gov-w-48',
+      'gov-flex-none',
+      'gov-bg-cover',
+      'gov-bg-center',
+      'gov-text-center',
+      'gov-overflow-hidden',
+      'gov-rounded-t',
+      'lg:gov-rounded-t-none',
+      'lg:gov-rounded-l'
+    ]
+  %}
+  
+{% elseif style == 'style2' %}
+  {%
+    set card_classes = [
+      'gov-w-full',
+      'lg:gov-max-w-xs',
+      'lg:gov-w-full',
+      'gov-flex',
+      'gov-flex-col',
+      'gov-flex-wrap',
+      'gov-mb-4',
+      'gov-transform',
+      'gov-transition-all',
+      'lg:gov-mb-0',
+      'hover:gov-shadow-lg',
+      'hover:gov--translate-y-2',
+    ]
+  %}
+  {%
+    set text_classes = [
+      'gov-p-4',
+      'gov-rounded-b',
+      'gov-border-b',
+      'gov-border-r',
+      'gov-border-l',
+      'gov-border-grey-light'
+    ]
+  %}
+  {%
+    set image_classes = [
+      'gov-h-60',
+      'go-w-full',
+      'gov-rounded-t',
+      'gov-bg-cover',
+      'gov-bg-center'
+    ]
+  %}
+{% elseif style == 'style3' %}
+{% endif %}
+
+{% block paragraph %}
+  <div{{ attributes.addClass(classes, card_classes) }}>
+    {% block content %}
+      <div {{attributes.addClass(image_classes).removeClass(card_classes, classes)}} style="background-image:url({{ image }})" class="{{image_classes}}"></div>
+      <div {{attributes.addClass(text_classes).removeClass(image_classes, card_classes, classes)}}>
+        <div class="gov-prose">
+          <h2>{{ title }}</h2>
+          {{ body|raw }}
+        </div>
+        {{ link(link_title, link_uri, { 'class':['gov-inline-block', 'gov-rounded', 'gov-p-3', 'gov-mt-4', 'gov-font-medium', 'gov-w-auto', 'gov-text-center', 'gov-text-primary-light', 'gov-bg-secondary-dark', 'hover:gov-bg-primary-dark']} ) }}
+      </div>
+
+    {% endblock %}
+  </div>
+{% endblock paragraph %}

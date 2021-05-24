@@ -4,3 +4,7 @@ global-styling:
       dist/main.css: {}
   js:
     dist/main.bundle.js: {}
+
+alpine:
+  js:
+    'https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js': {type: external, minified: true, defer: true}

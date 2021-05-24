@@ -47,11 +47,16 @@
 #}
 <div>
 
-  <header role="banner">
-    {{ page.header }}
+  <header role="banner" class="gov-p-4 md:gov-py-4 md:gov-px-0 gov-bg-primary-dark">
+    <div class="gov-container gov-mx-auto">
+      <div class="gov-flex gov-items-center gov-justify-between">
+        {{ page.header }}
+        {{ page.primary_menu }}
+      </div>
+    </div>
   </header>
 
-  {{ page.primary_menu }}
+  
   {{ page.secondary_menu }}
 
   {{ page.breadcrumb }}
@@ -60,19 +65,20 @@
 
   {{ page.help }}
 
-  <main role="main" class="gov-container gov-mx-auto gov-p-4 gov-bg-yellow-500">
+  <main role="main" class="gov-container gov-mx-auto gov-px-4">
     <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
 
-    <div class="md:gov-flex gov--mx-4">
-      <div class="md:gov-flex-1 gov-p-4">
-        {{ page.content }}
-      </div>{# /.layout-content #}
+    <div class="w-full md:gov-flex">
 
       {% if page.sidebar_first %}
         <aside class="md:gov-w-1/4 gov-p-4" role="complementary">
           {{ page.sidebar_first }}
         </aside>
       {% endif %}
+
+      <div class="md:gov-flex-1">
+        {{ page.content }}
+      </div>{# /.layout-content #}
 
       {% if page.sidebar_second %}
         <aside class="md:gov-w-1/4" role="complementary">
