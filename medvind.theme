@@ -1,24 +1,42 @@
 <?php
 
-  function medvind_preprocess_html(&$variables) {
-    if (theme_get_setting('mobile_menu_all_widths') === 1) {
-      $variables['attributes']['class'][] = 'is-always-mobile-nav';
-    }
-    // Set colors
-    $variables['color_primary_light'] = theme_get_setting('color_primary_light');
-    $variables['color_primary_dark'] = theme_get_setting('color_primary_dark');
-    $variables['color_secondary_light'] = theme_get_setting('color_secondary_light');
-    $variables['color_secondary_dark'] = theme_get_setting('color_secondary_dark');
-    $variables['color_tertiary_light'] = theme_get_setting('color_tertiary_light');
-    $variables['color_tertiary_dark'] = theme_get_setting('color_tertiary_dark');
+function medvind_theme_suggestions_block_alter(&$suggestions, $variables)
+{
+  $content = $variables['elements']['content'];
+  if (isset($content['#block_content']) && $content['#block_content'] instanceof \Drupal\block_content\BlockContentInterface) {
+    $suggestions[] = 'block__' . $content['#block_content']->bundle();
   }
+}
 
-  function medvind_preprocess_menu(&$variables, $hook){
-    if (theme_get_setting('mobile_menu_all_widths') === 0) {
-      $variables['mobileMenu'] = false;
-    }else{
-      $variables['mobileMenu'] = true;
-    }
+function medvind_theme_suggestions_table_alter(array &$suggestions, array $variables, $hook)
+{
+  $node = \Drupal::routeMatch()->getParameter('node');
+  if ($node) {
+    $nid = $node->id();
+    $type = $node->getType();
+    $suggestions[] = $hook . '__' . $type . '_' . $nid;
   }
+}
 
-  
+function medvind_preprocess_html(&$variables)
+{
+  if (theme_get_setting('mobile_menu_all_widths') === 1) {
+    $variables['attributes']['class'][] = 'is-always-mobile-nav';
+  }
+  // Set colors
+  $variables['color_primary_light'] = theme_get_setting('color_primary_light');
+  $variables['color_primary_dark'] = theme_get_setting('color_primary_dark');
+  $variables['color_secondary_light'] = theme_get_setting('color_secondary_light');
+  $variables['color_secondary_dark'] = theme_get_setting('color_secondary_dark');
+  $variables['color_tertiary_light'] = theme_get_setting('color_tertiary_light');
+  $variables['color_tertiary_dark'] = theme_get_setting('color_tertiary_dark');
+}
+
+function medvind_preprocess_menu(&$variables, $hook)
+{
+  if (theme_get_setting('mobile_menu_all_widths') === 0) {
+    $variables['mobileMenu'] = false;
+  } else {
+    $variables['mobileMenu'] = true;
+  }
+}

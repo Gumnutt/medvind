@@ -1,0 +1,11 @@
+{
+  "intelephense.files.associations": [
+    "*.inc",
+    "*.theme",
+    "*.install",
+    "*.module",
+    "*.profile",
+    "*.php",
+    "*.phtml"
+  ]
+}

@@ -46,43 +46,30 @@
  */
 #}
 <div>
-
+  {% if page.notification %}
+  <div class="notification">
+    {{ page.notification }}
+  </div>
+  {% endif %}
   <header role="banner" class="gov-p-4 md:gov-py-4 md:gov-px-0 gov-bg-primary-dark">
     <div class="gov-container gov-mx-auto">
       <div class="gov-flex gov-items-center gov-justify-between">
         {{ page.header }}
-        {{ page.primary_menu }}
       </div>
     </div>
   </header>
-
-  
-  {{ page.secondary_menu }}
-
   {{ page.breadcrumb }}
 
-  {{ page.highlighted }}
-
   {{ page.help }}
-
   <main role="main" class="gov-container gov-mx-auto gov-px-4">
     <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
-
     <div class="w-full md:gov-flex">
-
-      {% if page.sidebar_first %}
-        <aside class="md:gov-w-1/4 gov-p-4" role="complementary">
-          {{ page.sidebar_first }}
-        </aside>
-      {% endif %}
-
       <div class="md:gov-flex-1">
         {{ page.content }}
       </div>{# /.layout-content #}
-
-      {% if page.sidebar_second %}
+      {% if page.sidebar %}
         <aside class="md:gov-w-1/4" role="complementary">
-          {{ page.sidebar_second }}
+          {{ page.sidebar }}
         </aside>
       {% endif %}
     </div>

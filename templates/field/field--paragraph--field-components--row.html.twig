@@ -6,14 +6,23 @@
 
 {% if label_hidden %}
   {% if multiple %}
-    <div{{ attributes }} class="gov-flex gov-flex-wrap gov-justify-evenly">
+    <div{{ attributes }} class="gov-flex gov-flex-wrap gov-justify-between xl:gov-justify-evenly">
       {% for item in items %}
+        {% set type = item.content['#paragraph'].type[0].value.target_id %}
         {% set style = item.content['#paragraph'].field_variant[0].value %}
-        {% set width_styling = [
-          style == 'style1' ? 'gov-w-full gov-pb-4',
-          style == 'style2' ? 'gov-w-full lg:gov-w-auto',
-          style == 'style3' ? '',
-        ] %}
+        {% if type == 'card' %}
+          {% set width_styling = [
+            style == 'style1' ? 'gov-w-full gov-pb-4',
+            style == 'style2' ? 'gov-w-full lg:gov-w-auto',
+            style == 'style3' ? '',
+          ] %}
+        {% else %}
+          {% set width_styling = [
+            style == 'style1' ? 'gov-w-full',
+            style == 'style2' ? 'gov-w-full',
+            style == 'style3' ? '',
+          ] %}
+        {% endif %}
         <div{{ item.attributes.addClass(width_styling) }}>{{ item.content }}</div>
       {% endfor %}
     </div>

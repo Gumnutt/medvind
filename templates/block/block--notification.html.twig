@@ -1,0 +1,31 @@
+{{ attach_library('medvind/alpine') }}
+{{ attach_library('medvind/notifications') }}
+
+{% set type = content.field_type['#items'][0].value %}
+{% set text = content.body['#items'][0].value %}
+
+<div{{ attributes.addClass('gov-relative gov-flex gov-items-center gov-w-full', type) }} x-data="{ show: true }">
+  {{ title_suffix }}
+  {% block content %}
+    {% set type_style = [
+      'gov-flex',
+      'gov-justify-center',
+      'gov-py-4',
+      'gov-px-4',
+      type == 'success' ? 'gov-bg-green-500',
+      type == 'warning' ? 'gov-bg-red-400',
+      type == 'info' ? 'gov-bg-blue-500 gov-text-white',
+    ] %}
+    <button @click="show = !show; notification_status(`{{ type }}`)" x-show="show" :aria-expanded="show ? 'true' : 'false'" class="gov-absolute gov-right-4 gov-z-10 {{ type == 'info' ? 'gov-text-white' : 'gov-text-black' }}">
+      <svg xmlns="http://www.w3.org/2000/svg" class="gov-w-6 gov-h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+    <div{{attributes.addClass(type_style).removeClass(type)}} x-show="show">
+      <div class="gov-w-full gov-max-w-3xl gov-text-center gov-text-xl">
+        {{ text|raw }}
+      </div>
+    </div> 
+  {% endblock %}
+</div>
+

@@ -7,3 +7,12 @@ base theme: stable
 libraries:
   - medvind/global-styling
   - medvind/alpine
+  - medvind/notifications
+regions:
+  notification: 'Notifications'
+  header: 'Header'
+  breadcrumb: Breadcrumb
+  help: Help
+  content: Content
+  sidebar: 'Sidebar'
+  footer: 'Footer'

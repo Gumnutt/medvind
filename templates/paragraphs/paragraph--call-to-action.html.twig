@@ -1,0 +1,42 @@
+{% set title = paragraph.field_title.0.value %}
+{% set body = paragraph.field_body.0.value %}
+{% set link_title = paragraph.field_cta.0.title %}
+{% set link_uri = paragraph.field_cta.0.uri %}
+{% set style = paragraph.field_variant.0.value %}
+
+{%
+  set classes = [
+    'paragraph',
+    'paragraph--type--' ~ paragraph.bundle|clean_class,
+    view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
+    not paragraph.isPublished() ? 'paragraph--unpublished',
+    'gov-border',
+    'gov-rounded-2xl',
+    'gov-flex',
+    'gov-items-center',
+    'gov-justify-center',
+    'gov-p-12',
+    'gov-w-full',
+  ]
+%}
+
+{% set styling = [
+  'gov-w-full',
+  style == 'style1' ? 'gov-max-w-3xl gov-flex gov-flex-wrap gov-justify-center',
+  style == 'style2' ? 'gov-w-full gov-row gov-flex gov-justify-between',
+  style == 'style3' ? 'gov-py-16',
+] %}
+
+{% block paragraph %}
+  <div{{ attributes.addClass(classes) }}>
+    {% block content %}
+      <div{{attributes.addClass(styling).removeClass(classes)}}>
+        <div class="{{ style == 'style2' ? 'gov-max-w-md' }}">
+          <h2 class="gov-text-3xl gov-mb-8 gov-font-bold {{ style == 'style2' ? 'gov-text-left' : 'gov-text-center'}}">{{ title }}</h2>
+          <div class="{{ style == 'style2' ? 'gov-text-left' : 'gov-text-center gov-mb-4'}}">{{ body|raw }}</div>
+        </div>
+        {{ link(link_title, link_uri, { 'class':['gov-block', 'gov-rounded', 'gov-p-3', 'gov-font-medium', 'gov-w-auto', 'gov-text-center', 'gov-text-primary-light', 'gov-bg-secondary-dark', 'hover:gov-bg-primary-dark']} ) }}
+      </div>
+    {% endblock %}
+  </div>
+{% endblock paragraph %}

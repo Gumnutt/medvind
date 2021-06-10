@@ -1,4 +1,4 @@
-import './scss/main.scss';
-// import {mobileMenu} from './mobile-menu'
+import './scss/main.scss'
+// import { notification_status } from './js/notification'
 
-// mobileMenu()
+// notification_status()
